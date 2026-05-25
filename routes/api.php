@@ -23,4 +23,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events/{event}/duplicate', [EventController::class, 'duplicate']);
     Route::post('/events/{event}/publish', [EventController::class, 'publish']);
     Route::post('/events/{event}/archive', [EventController::class, 'archive']);
+
+    // Guests
+    Route::get('/events/{eventId}/guests', [App\Http\Controllers\GuestController::class, 'index']);
+    Route::post('/events/{eventId}/guests', [App\Http\Controllers\GuestController::class, 'store']);
+    Route::put('/events/{eventId}/guests/{id}', [App\Http\Controllers\GuestController::class, 'update']);
+    Route::delete('/events/{eventId}/guests/{id}', [App\Http\Controllers\GuestController::class, 'destroy']);
+    Route::post('/events/{eventId}/guests/import', [App\Http\Controllers\GuestController::class, 'bulkImport']);
+    Route::get('/events/{eventId}/guests/{id}/whatsapp', [App\Http\Controllers\GuestController::class, 'whatsappLink']);
+
+    // Delete GuestBook entry
+    Route::delete('/events/{eventId}/guestbook/{id}', [App\Http\Controllers\GuestBookController::class, 'destroy']);
 });
+
+// --- Public Routes ---
+Route::get('/public/v/{slug}/guest/{qrCode}', [App\Http\Controllers\GuestController::class, 'publicShow']);
+Route::post('/public/v/{slug}/guest/{qrCode}/rsvp', [App\Http\Controllers\GuestController::class, 'publicUpdateRsvp']);
+
+Route::get('/public/v/{slug}/guestbook', [App\Http\Controllers\GuestBookController::class, 'index']);
+Route::post('/public/v/{slug}/guestbook', [App\Http\Controllers\GuestBookController::class, 'store']);
+

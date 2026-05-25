@@ -28,17 +28,18 @@ class AuthController extends Controller
         ]);
 
         // Default role could be client
-        if (class_exists('\App\Models\Role') && method_exists($user, 'roles')) {
+        if (class_exists('\App\Models\Role')) {
             $clientRole = \App\Models\Role::where('slug', 'client')->first();
             if ($clientRole) {
-                $user->roles()->attach($clientRole->id);
+                $user->role_id = $clientRole->id;
+                $user->save();
             }
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user->load('roles'),
+            'user' => $user->load('role'),
             'token' => $token,
         ], 201);
     }
@@ -61,7 +62,7 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user->load('roles'),
+            'user' => $user->load('role'),
             'token' => $token,
         ]);
     }
@@ -69,7 +70,7 @@ class AuthController extends Controller
     public function profile(Request $request)
     {
         return response()->json([
-            'user' => $request->user()->load('roles'),
+            'user' => $request->user()->load('role'),
         ]);
     }
 

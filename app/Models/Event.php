@@ -42,4 +42,9 @@ class Event extends Model
             }
         });
     }
+
+    public function guests()
+    {
+        return $this->hasMany(Guest::class);
+    }
 }

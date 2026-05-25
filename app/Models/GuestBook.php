@@ -10,7 +10,7 @@ class GuestBook extends Model
     use HasFactory;
 
     protected $fillable = [
-        'invitation_id',
+        'event_id',
         'guest_name',
         'message',
         'is_approved',
@@ -21,10 +21,10 @@ class GuestBook extends Model
     ];
 
     /**
-     * The invitation this guest book comment belongs to.
+     * The event this guest book comment belongs to.
      */
-    public function invitation()
+    public function event()
     {
-        return $this->belongsTo(Invitation::class);
+        return $this->belongsTo(Event::class);
     }
 }
